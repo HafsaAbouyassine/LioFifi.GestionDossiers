@@ -1,0 +1,313 @@
+﻿<Window
+    x:Class="CPAM.GestionDossiers.DossierDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CPAM.GestionDossiers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Détails du dossier"
+    Width="900"
+    Height="600"
+    Background="#FFF5F9FF"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <DropShadowEffect
+            x:Key="ShadowEffect"
+            BlurRadius="10"
+            Opacity="0.2"
+            ShadowDepth="2" />
+
+        <!--  Style pour l'en-tête du tableau  -->
+        <Style x:Key="TableHeaderStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF1E3A5F" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <!--  Style pour les cellules du tableau  -->
+        <Style x:Key="TableCellStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF2F4F4F" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <!--  Style pour les champs éditables  -->
+        <Style x:Key="EditableFieldStyle" TargetType="TextBox">
+            <Setter Property="BorderBrush" Value="#FFA7C4FF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#FF2F4F4F" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF1E3A5F" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Effect" Value="{StaticResource ShadowEffect}" />
+            <Setter Property="Margin" Value="5,0" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  En-tête  -->
+        <Border
+            Grid.Row="0"
+            Padding="15"
+            Background="#FF1E3A5F"
+            CornerRadius="5"
+            Effect="{StaticResource ShadowEffect}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center"
+                    FontSize="24"
+                    Text="📋" />
+                <StackPanel>
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        Text="FICHE DOSSIER" />
+                    <TextBlock
+                        FontSize="14"
+                        Foreground="#FFA7C4FF"
+                        Text="{Binding NumeroIdentite, StringFormat='N°: {0}'}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!--  Tableau des détails  -->
+        <Border
+            Grid.Row="1"
+            Margin="0,15,0,0"
+            Padding="15"
+            Background="White"
+            CornerRadius="5"
+            Effect="{StaticResource ShadowEffect}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!--  Ligne 1  -->
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Nom de l'assuré:" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Style="{StaticResource TableCellStyle}"
+                        Text="{Binding NomAssure}" />
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Numéro de dossier:" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        Style="{StaticResource TableCellStyle}"
+                        Text="{Binding NumeroIdentite}" />
+
+                    <!--  Ligne 2  -->
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Date de création:" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Style="{StaticResource TableCellStyle}"
+                        Text="{Binding DateCreation, StringFormat='dd/MM/yyyy'}" />
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Date de naissance:" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        Style="{StaticResource TableCellStyle}"
+                        Text="{Binding DateNaissance, StringFormat='dd/MM/yyyy'}" />
+
+                    <!--  Ligne 3  -->
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Statut:" />
+                    <ComboBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        SelectedItem="{Binding Statut, Mode=TwoWay}"
+                        Style="{StaticResource EditableFieldStyle}">
+                        <ComboBoxItem>Nouveau</ComboBoxItem>
+                        <ComboBoxItem>En cours</ComboBoxItem>
+                        <ComboBoxItem>Terminé</ComboBoxItem>
+                        <ComboBoxItem>En attente</ComboBoxItem>
+                    </ComboBox>
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Catégorie:" />
+                    <ComboBox
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        SelectedItem="{Binding Categorie, Mode=TwoWay}"
+                        Style="{StaticResource EditableFieldStyle}">
+                        <ComboBoxItem>Médical</ComboBoxItem>
+                        <ComboBoxItem>Hospitalisation</ComboBoxItem>
+                        <ComboBoxItem>Pharmacie</ComboBoxItem>
+                        <ComboBoxItem>Dentaire</ComboBoxItem>
+                    </ComboBox>
+
+                    <!--  Ligne 4  -->
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Agent responsable:" />
+                    <ComboBox
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        SelectedItem="{Binding AgentResponsable, Mode=TwoWay}"
+                        Style="{StaticResource EditableFieldStyle}">
+                        <ComboBoxItem>Agent Dupont</ComboBoxItem>
+                        <ComboBoxItem>Agent Martin</ComboBoxItem>
+                        <ComboBoxItem>Agent Lambert</ComboBoxItem>
+                    </ComboBox>
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Date dernière modification:" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="3"
+                        Style="{StaticResource TableCellStyle}"
+                        Text="{Binding DateDerniereModification, StringFormat='dd/MM/yyyy HH:mm'}" />
+
+                    <!--  Ligne 5  -->
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Montant remboursé:" />
+                    <TextBox
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Style="{StaticResource EditableFieldStyle}"
+                        Text="{Binding MontantRembourse, Mode=TwoWay, StringFormat={}{0:C}}" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Pourcentage remboursement:" />
+                    <TextBox
+                        Grid.Row="4"
+                        Grid.Column="3"
+                        Style="{StaticResource EditableFieldStyle}"
+                        Text="{Binding PourcentageRemboursement, Mode=TwoWay}" />
+
+                    <!--  Ligne 6 - Commentaires (sur toute la largeur)  -->
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Commentaires:" />
+                    <TextBox
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        MinHeight="80"
+                        AcceptsReturn="True"
+                        Style="{StaticResource EditableFieldStyle}"
+                        Text="{Binding Commentaires, Mode=TwoWay}"
+                        VerticalScrollBarVisibility="Auto" />
+
+                    <!--  Ligne 7 - Documents (sur toute la largeur)  -->
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Style="{StaticResource TableHeaderStyle}"
+                        Text="Documents associés:" />
+                    <ListBox
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        MinHeight="60"
+                        BorderThickness="0"
+                        ItemsSource="{Binding Documents}"
+                        Style="{StaticResource EditableFieldStyle}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="2" Text="{Binding NomFichier}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </ScrollViewer>
+        </Border>
+
+        <!--  Boutons d'action  -->
+        <Border
+            Grid.Row="2"
+            Margin="0,15,0,0"
+            Padding="10"
+            Background="White"
+            CornerRadius="5"
+            Effect="{StaticResource ShadowEffect}">
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button
+                    x:Name="btnAnnuler"
+                    Background="#FF7F9FBF"
+                    Click="BtnAnnuler_Click"
+                    Content="Annuler"
+                    Style="{StaticResource PrimaryButtonStyle}" />
+                <Button
+                    x:Name="btnEnregistrer"
+                    Click="BtnEnregistrer_Click"
+                    Content="Enregistrer modifications"
+                    Style="{StaticResource PrimaryButtonStyle}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

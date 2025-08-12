@@ -1,0 +1,240 @@
+﻿<Window
+    x:Class="CPAM.GestionDossiers.RechercherDossierWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CPAM.GestionDossiers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Rechercher un dossier"
+    Width="650"
+    Height="550"
+    Background="#FFF5F9FF"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="SingleBorderWindow"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <!--  Styles  -->
+        <DropShadowEffect
+            x:Key="ShadowEffect"
+            BlurRadius="10"
+            Opacity="0.2"
+            ShadowDepth="2" />
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF1E3A5F" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Effect" Value="{StaticResource ShadowEffect}" />
+        </Style>
+
+        <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="BorderBrush" Value="#FFA7C4FF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#FF2F4F4F" />
+        </Style>
+
+        <Style x:Key="ResultItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Margin" Value="0,0,0,5" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="#FFE0E9FF"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFE6F0FF" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFA7C4FF" />
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF1E3A5F" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  En-tête  -->
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,0,0,15"
+            FontSize="22"
+            FontWeight="Bold"
+            Foreground="#FF1E3A5F"
+            Text="Recherche de dossiers" />
+
+        <!--  Zone de recherche  -->
+        <Border
+            Grid.Row="1"
+            Padding="15"
+            Background="White"
+            CornerRadius="8"
+            Effect="{StaticResource ShadowEffect}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox
+                    x:Name="txtRecherche"
+                    Grid.Column="0"
+                    VerticalContentAlignment="Center"
+                    Style="{StaticResource SearchTextBoxStyle}"
+                    TextChanged="TxtRecherche_TextChanged">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+
+                <Button
+                    x:Name="btnRechercher"
+                    Grid.Column="1"
+                    Margin="10,0,0,0"
+                    Click="BtnRechercher_Click"
+                    Content="Rechercher"
+                    Style="{StaticResource PrimaryButtonStyle}" />
+            </Grid>
+        </Border>
+
+        <!--  Résultats  -->
+        <Border
+            Grid.Row="2"
+            Margin="0,15,0,0"
+            Padding="0"
+            Background="White"
+            CornerRadius="8"
+            Effect="{StaticResource ShadowEffect}">
+            <ListBox
+                x:Name="lstResultats"
+                ItemContainerStyle="{StaticResource ResultItemStyle}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                SelectionChanged="LstResultats_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="15">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--  Icône  -->
+                                <Border
+                                    Grid.Column="0"
+                                    Width="40"
+                                    Height="40"
+                                    Margin="0,0,15,0"
+                                    VerticalAlignment="Top"
+                                    Background="#FFE6F0FF"
+                                    CornerRadius="20">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="20"
+                                        Text="📁" />
+                                </Border>
+
+                                <!--  Détails du dossier  -->
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Foreground="#FF1E3A5F"
+                                        Text="{Binding NumeroIdentite}" />
+
+                                    <TextBlock
+                                        Margin="0,2,0,0"
+                                        Foreground="#FF2F4F4F"
+                                        Text="{Binding NomAssure}" />
+
+                                    <WrapPanel Margin="0,5,0,0">
+                                        <Border
+                                            Margin="0,0,5,0"
+                                            Padding="5,2"
+                                            Background="#FFE6F0FF"
+                                            CornerRadius="3">
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="#FF1E3A5F"
+                                                Text="{Binding Statut}" />
+                                        </Border>
+
+                                        <Border
+                                            Margin="0,0,5,0"
+                                            Padding="5,2"
+                                            Background="#FFE6F0FF"
+                                            CornerRadius="3">
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="#FF1E3A5F"
+                                                Text="{Binding Categorie}" />
+                                        </Border>
+
+                                        <TextBlock
+                                            FontSize="12"
+                                            Foreground="#FF7F9FBF"
+                                            Text="{Binding DateCreation, StringFormat='Créé le {0:dd/MM/yyyy}'}" />
+                                    </WrapPanel>
+
+                                    <TextBlock
+                                        Margin="0,3,0,0"
+                                        FontSize="12"
+                                        Foreground="#FF5F7A9F"
+                                        Text="{Binding AgentResponsable, StringFormat='Agent: {0}'}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+
+        <!--  Boutons d'action  -->
+        <StackPanel
+            Grid.Row="3"
+            Margin="0,15,0,0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Background="#FF7F9FBF"
+                Click="BtnFermer_Click"
+                Content="Fermer"
+                Style="{StaticResource PrimaryButtonStyle}" />
+            <Button
+                x:Name="btnOuvrir"
+                Margin="10,0,0,0"
+                Click="BtnOuvrir_Click"
+                Content="Ouvrir le dossier"
+                IsEnabled="False"
+                Style="{StaticResource PrimaryButtonStyle}" />
+        </StackPanel>
+    </Grid>
+</Window>
