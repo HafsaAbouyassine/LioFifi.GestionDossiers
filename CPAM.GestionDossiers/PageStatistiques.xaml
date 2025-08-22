@@ -4,11 +4,221 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CPAM.GestionDossiers"
+      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="PageStatistiques">
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="Statistiques"
+      Background="#FFF5F9FF">
 
-    <Grid>
-        
+    <Page.Resources>
+        <DropShadowEffect x:Key="ShadowEffect" BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+
+        <!-- Style pour les cartes de statistiques -->
+        <Style x:Key="StatCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowEffect}"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+
+        <!-- Style pour les titres de section -->
+        <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF1E3A5F"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF1E3A5F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowEffect}"/>
+        </Style>
+
+        <!-- Style pour les indicateurs -->
+        <Style x:Key="IndicatorValueStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF1E3A5F"/>
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="IndicatorLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF5F7A9F"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="15">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- En-tête -->
+                <Border Background="#FF1E3A5F" CornerRadius="10" Padding="20" Margin="0,0,0,20" Effect="{StaticResource ShadowEffect}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="📈" FontSize="28" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="STATISTIQUES DES DOSSIERS" 
+                                   Foreground="White" 
+                                   FontSize="22" 
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Indicateurs principaux -->
+                <TextBlock Text="INDICATEURS CLÉS" Style="{StaticResource SectionTitleStyle}"/>
+
+                <WrapPanel HorizontalAlignment="Center">
+                    <!-- Carte 1 : Total dossiers -->
+                    <Border Width="200" Height="120" Style="{StaticResource StatCardStyle}">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding TotalDossiers}" Style="{StaticResource IndicatorValueStyle}"/>
+                            <TextBlock Text="Dossiers totaux" Style="{StaticResource IndicatorLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Carte 2 : Dossiers traités -->
+                    <Border Width="200" Height="120" Style="{StaticResource StatCardStyle}">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding DossiersTraites}" Style="{StaticResource IndicatorValueStyle}"/>
+                            <TextBlock Text="Dossiers traités" Style="{StaticResource IndicatorLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Carte 3 : Taux traitement -->
+                    <Border Width="200" Height="120" Style="{StaticResource StatCardStyle}">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding TauxTraitement, StringFormat={}{0}%}" Style="{StaticResource IndicatorValueStyle}"/>
+                            <TextBlock Text="Taux de traitement" Style="{StaticResource IndicatorLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Carte 4 : Dossiers en attente -->
+                    <Border Width="200" Height="120" Style="{StaticResource StatCardStyle}">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding DossiersEnAttente}" Style="{StaticResource IndicatorValueStyle}"/>
+                            <TextBlock Text="En attente" Style="{StaticResource IndicatorLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
+
+                <!-- Graphiques -->
+                <TextBlock Text="RÉPARTITION PAR STATUT" Style="{StaticResource SectionTitleStyle}" Margin="0,30,0,0"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Camembert -->
+                    <Border Grid.Column="0" Style="{StaticResource StatCardStyle}" Margin="5">
+                        <StackPanel>
+                            <TextBlock Text="Répartition par statut" 
+                                       Foreground="#FF1E3A5F" 
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,10"/>
+                            <lvc:PieChart Series="{Binding SeriesCollection}" 
+                                         LegendLocation="Bottom"
+                                         Height="250">
+                                <lvc:PieChart.ChartLegend>
+                                    <lvc:DefaultLegend Foreground="#FF2F4F4F"/>
+                                </lvc:PieChart.ChartLegend>
+                            </lvc:PieChart>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Barres -->
+                    <Border Grid.Column="1" Style="{StaticResource StatCardStyle}" Margin="5">
+                        <StackPanel>
+                            <TextBlock Text="Dossiers par catégorie" 
+                                       Foreground="#FF1E3A5F" 
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,10"/>
+                            <lvc:CartesianChart Series="{Binding ColumnSeries}" 
+                                               LegendLocation="None"
+                                               Height="250">
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Labels="{Binding Categories}" 
+                                             Foreground="#FF2F4F4F"/>
+                                </lvc:CartesianChart.AxisX>
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Foreground="#FF2F4F4F"/>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Évolution mensuelle -->
+                <TextBlock Text="ÉVOLUTION MENSUELLE" Style="{StaticResource SectionTitleStyle}" Margin="0,30,0,0"/>
+
+                <Border Style="{StaticResource StatCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Nouveaux dossiers par mois" 
+                                   Foreground="#FF1E3A5F" 
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,10"/>
+                        <lvc:CartesianChart Series="{Binding LineSeries}" 
+                                           LegendLocation="None"
+                                           Height="250">
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Labels="{Binding Months}" 
+                                         Foreground="#FF2F4F4F"/>
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Foreground="#FF2F4F4F"/>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tableau des performances -->
+                <TextBlock Text="PERFORMANCE DES AGENTS" Style="{StaticResource SectionTitleStyle}" Margin="0,30,0,0"/>
+
+                <Border Style="{StaticResource StatCardStyle}">
+                    <DataGrid x:Name="dgAgents" 
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              BorderThickness="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Agent" Width="*" Binding="{Binding Agent}">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Background" Value="#FF1E3A5F"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Dossiers traités" Width="120" Binding="{Binding DossiersTraites}"/>
+                            <DataGridTextColumn Header="En cours" Width="100" Binding="{Binding EnCours}"/>
+                            <DataGridTextColumn Header="Taux de complétion" Width="120" Binding="{Binding TauxCompletion, StringFormat={}{0}%}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+
+                <!-- Actions -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                    <Button Content="Actualiser" 
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Click="BtnActualiser_Click"/>
+                    <Button Content="Exporter PDF" 
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Margin="10,0,0,0"
+                            Click="BtnExporter_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

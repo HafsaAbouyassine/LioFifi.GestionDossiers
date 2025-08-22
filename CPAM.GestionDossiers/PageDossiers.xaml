@@ -5,10 +5,266 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CPAM.GestionDossiers"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="PageDossiers">
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="Gestion des dossiers"
+      Background="#FFF5F9FF">
 
-    <Grid>
-        
+    <Page.Resources>
+        <DropShadowEffect x:Key="ShadowEffect" BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+
+        <!-- Style pour les boutons d'action -->
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="ToolTip" Value="{Binding Content}"/>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF1E3A5F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowEffect}"/>
+            <Setter Property="Margin" Value="5,0"/>
+        </Style>
+
+        <!-- Style pour la TextBox de recherche -->
+        <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FFA7C4FF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#FF2F4F4F"/>
+        </Style>
+
+        <!-- Style pour ComboBox -->
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FFA7C4FF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#FF2F4F4F"/>
+        </Style>
+
+        <!-- Style pour les statuts -->
+        <Style x:Key="StatusBadgeStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="6,2"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <!-- Style pour les lignes de la DataGrid -->
+        <Style x:Key="DataGridRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFE6F0FF"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#FFA7C4FF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- En-tête -->
+        <Border Grid.Row="0" Background="#FF1E3A5F" CornerRadius="5" Padding="15" Effect="{StaticResource ShadowEffect}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="📊" FontSize="24" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <TextBlock Text="GESTION DES DOSSIERS" 
+                           Foreground="White" 
+                           FontSize="20" 
+                           FontWeight="Bold"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Barre d'outils -->
+        <Border Grid.Row="1" Background="White" CornerRadius="5" Margin="0,15,0,10" Padding="10" Effect="{StaticResource ShadowEffect}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <TextBox x:Name="txtRecherche" 
+                         Width="250"
+                         Style="{StaticResource SearchTextBoxStyle}">
+                    <TextBox.Tag>Rechercher un dossier...</TextBox.Tag>
+                </TextBox>
+
+                <ComboBox x:Name="cmbFiltreStatut"
+                          Width="150"
+                          Margin="10,0,0,0"
+                          Style="{StaticResource ComboBoxStyle}"
+                          SelectionChanged="CmbFiltreStatut_SelectionChanged">
+                    <ComboBoxItem>Tous les statuts</ComboBoxItem>
+                    <ComboBoxItem>Nouveau</ComboBoxItem>
+                    <ComboBoxItem>En cours</ComboBoxItem>
+                    <ComboBoxItem>Terminé</ComboBoxItem>
+                    <ComboBoxItem>En attente</ComboBoxItem>
+                </ComboBox>
+
+                <Button x:Name="btnActualiser"
+                        Content="Actualiser" 
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Click="BtnActualiser_Click"
+                        Margin="20,0,0,0"/>
+
+                <TextBlock x:Name="txtCount" 
+                           Foreground="#FF5F7A9F"
+                           VerticalAlignment="Center"
+                           Margin="20,0,0,0"
+                           FontWeight="SemiBold"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Grille des dossiers -->
+        <Border Grid.Row="2" Background="White" CornerRadius="5" Effect="{StaticResource ShadowEffect}">
+            <DataGrid x:Name="dgDossiers"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      HeadersVisibility="Column"
+                      RowStyle="{StaticResource DataGridRowStyle}"
+                      BorderThickness="0"
+                      SelectionChanged="DgDossiers_SelectionChanged">
+                <DataGrid.Columns>
+                    <!-- Numéro de dossier -->
+                    <DataGridTextColumn Header="N° Dossier" Width="120" Binding="{Binding NumeroIdentite}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#FF1E3A5F"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Padding" Value="10"/>
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="#FF1E3A5F"/>
+                                <Setter Property="Padding" Value="10"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Nom assuré -->
+                    <DataGridTextColumn Header="Nom de l'assuré" Width="200" Binding="{Binding NomAssure}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Padding" Value="10"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Date création -->
+                    <DataGridTextColumn Header="Date création" Width="120" Binding="{Binding DateCreation, StringFormat='dd/MM/yyyy'}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Padding" Value="10"/>
+                                <Setter Property="Foreground" Value="#FF5F7A9F"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Statut avec DataTriggers -->
+                    <DataGridTemplateColumn Header="Statut" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="10" Padding="6,2" HorizontalAlignment="Left">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="#FF607D8B"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Statut}" Value="Nouveau">
+                                                    <Setter Property="Background" Value="#FF4CAF50"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Statut}" Value="En cours">
+                                                    <Setter Property="Background" Value="#FF2196F3"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Statut}" Value="Terminé">
+                                                    <Setter Property="Background" Value="#FF9C27B0"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Statut}" Value="En attente">
+                                                    <Setter Property="Background" Value="#FFFF9800"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="{Binding Statut}" 
+                                               Foreground="White"
+                                               FontWeight="SemiBold"
+                                               FontSize="11"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- Catégorie -->
+                    <DataGridTextColumn Header="Catégorie" Width="120" Binding="{Binding Categorie}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Padding" Value="10"/>
+                                <Setter Property="Foreground" Value="#FF5F7A9F"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Agent -->
+                    <DataGridTextColumn Header="Agent" Width="120" Binding="{Binding AgentResponsable}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Padding" Value="10"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <!-- Actions -->
+                    <DataGridTemplateColumn Header="Actions" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{StaticResource ActionButtonStyle}" 
+                                            Click="BtnVoirDetails_Click"
+                                            Tag="{Binding}">
+                                        <TextBlock Text="👁️" FontSize="14"/>
+                                    </Button>
+                                    <Button Style="{StaticResource ActionButtonStyle}" 
+                                            Click="BtnModifier_Click"
+                                            Tag="{Binding}">
+                                        <TextBlock Text="✏️" FontSize="14"/>
+                                    </Button>
+                                    <Button Style="{StaticResource ActionButtonStyle}" 
+                                            Click="BtnSupprimer_Click"
+                                            Tag="{Binding}">
+                                        <TextBlock Text="🗑️" FontSize="14"/>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <!-- Pagination et actions -->
+        <Border Grid.Row="3" Background="White" CornerRadius="5" Margin="0,10,0,0" Padding="10" Effect="{StaticResource ShadowEffect}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnNouveauDossier"
+                        Content="Nouveau dossier" 
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Click="BtnNouveauDossier_Click"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>

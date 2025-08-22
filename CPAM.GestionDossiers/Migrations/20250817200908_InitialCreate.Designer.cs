@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CPAM.GestionDossiers.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250809130736_AddNumeroIdentiteToDossier")]
-    partial class AddNumeroIdentiteToDossier
+    [Migration("20250817200908_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,10 @@ namespace CPAM.GestionDossiers.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Commentaires")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateCreation")
                         .HasColumnType("datetime2");
 
@@ -50,6 +54,9 @@ namespace CPAM.GestionDossiers.Migrations
                     b.Property<DateTime?>("DateNaissance")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("MontantRembourse")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("NomAssure")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -57,6 +64,9 @@ namespace CPAM.GestionDossiers.Migrations
                     b.Property<string>("NumeroIdentite")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PourcentageRemboursement")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Statut")
                         .IsRequired()
@@ -72,11 +82,14 @@ namespace CPAM.GestionDossiers.Migrations
                             Id = 1,
                             AgentResponsable = "Alice Martin",
                             Categorie = "Santé",
+                            Commentaires = "Dossier en cours de traitement.",
                             DateCreation = new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDerniereModification = new DateTime(2023, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateNaissance = new DateTime(1985, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontantRembourse = 150.00m,
                             NomAssure = "Jean Dupont",
                             NumeroIdentite = "D123456",
+                            PourcentageRemboursement = 75.00m,
                             Statut = "En cours"
                         },
                         new
@@ -84,11 +97,14 @@ namespace CPAM.GestionDossiers.Migrations
                             Id = 2,
                             AgentResponsable = "Bob Lefevre",
                             Categorie = "Retraite",
+                            Commentaires = "Dossier terminé avec succès.",
                             DateCreation = new DateTime(2023, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDerniereModification = new DateTime(2023, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateNaissance = new DateTime(1970, 11, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontantRembourse = 200.00m,
                             NomAssure = "Marie Curie",
                             NumeroIdentite = "D654321",
+                            PourcentageRemboursement = 100.00m,
                             Statut = "Terminé"
                         },
                         new
@@ -96,11 +112,14 @@ namespace CPAM.GestionDossiers.Migrations
                             Id = 3,
                             AgentResponsable = "Claire Dubois",
                             Categorie = "Invalidité",
+                            Commentaires = "En attente de documents supplémentaires.",
                             DateCreation = new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDerniereModification = new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateNaissance = new DateTime(1990, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontantRembourse = 0.00m,
                             NomAssure = "Pierre Martin",
                             NumeroIdentite = "D789012",
+                            PourcentageRemboursement = 0.00m,
                             Statut = "En attente"
                         },
                         new
@@ -108,11 +127,14 @@ namespace CPAM.GestionDossiers.Migrations
                             Id = 4,
                             AgentResponsable = "David Moreau",
                             Categorie = "Santé",
+                            Commentaires = "Dossier en cours de traitement, attente de pièces justificatives.",
                             DateCreation = new DateTime(2023, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDerniereModification = new DateTime(2023, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateNaissance = new DateTime(1988, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontantRembourse = 300.00m,
                             NomAssure = "Sophie Durand",
                             NumeroIdentite = "D345678",
+                            PourcentageRemboursement = 60.00m,
                             Statut = "En cours"
                         });
                 });

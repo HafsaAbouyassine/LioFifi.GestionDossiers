@@ -13,6 +13,11 @@ namespace CPAM.GestionDossiers.Data
         {
         }
 
+        // 👇 constructeur vide pour le designer
+        public AppDbContext()
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CPAMDB;Trusted_Connection=True;");

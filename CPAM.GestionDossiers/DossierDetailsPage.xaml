@@ -13,13 +13,9 @@
     mc:Ignorable="d">
 
     <Window.Resources>
-        <DropShadowEffect
-            x:Key="ShadowEffect"
-            BlurRadius="10"
-            Opacity="0.2"
-            ShadowDepth="2" />
+        <DropShadowEffect x:Key="ShadowEffect" BlurRadius="10" Opacity="0.2" ShadowDepth="2" />
 
-        <!--  Style pour l'en-tête du tableau  -->
+        <!-- Styles pour l'en-tête du tableau -->
         <Style x:Key="TableHeaderStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="#FF1E3A5F" />
             <Setter Property="FontWeight" Value="Bold" />
@@ -27,15 +23,35 @@
             <Setter Property="Margin" Value="5" />
         </Style>
 
-        <!--  Style pour les cellules du tableau  -->
+        <!-- Styles pour les cellules du tableau -->
         <Style x:Key="TableCellStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="#FF2F4F4F" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="5" />
         </Style>
 
-        <!--  Style pour les champs éditables  -->
-        <Style x:Key="EditableFieldStyle" TargetType="TextBox">
+        <!-- Style pour TextBox éditables -->
+        <Style x:Key="EditableTextBoxStyle" TargetType="TextBox">
+            <Setter Property="BorderBrush" Value="#FFA7C4FF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#FF2F4F4F" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <!-- Style pour ComboBox éditables -->
+        <Style x:Key="EditableComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="BorderBrush" Value="#FFA7C4FF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#FF2F4F4F" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <!-- Style pour ListBox éditables -->
+        <Style x:Key="EditableListBoxStyle" TargetType="ListBox">
             <Setter Property="BorderBrush" Value="#FFA7C4FF" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Background" Value="White" />
@@ -170,113 +186,77 @@
                         Grid.Column="0"
                         Style="{StaticResource TableHeaderStyle}"
                         Text="Statut:" />
+                    <!-- Ligne 3 - ComboBox avec le bon style -->
                     <ComboBox
                         Grid.Row="2"
                         Grid.Column="1"
-                        SelectedItem="{Binding Statut, Mode=TwoWay}"
-                        Style="{StaticResource EditableFieldStyle}">
+                        SelectedValue="{Binding Statut, Mode=TwoWay}"
+                        SelectedValuePath="Content"
+                        Style="{StaticResource EditableComboBoxStyle}">
                         <ComboBoxItem>Nouveau</ComboBoxItem>
                         <ComboBoxItem>En cours</ComboBoxItem>
                         <ComboBoxItem>Terminé</ComboBoxItem>
                         <ComboBoxItem>En attente</ComboBoxItem>
                     </ComboBox>
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="2"
-                        Style="{StaticResource TableHeaderStyle}"
-                        Text="Catégorie:" />
+                    <!-- Catégorie -->
                     <ComboBox
                         Grid.Row="2"
                         Grid.Column="3"
-                        SelectedItem="{Binding Categorie, Mode=TwoWay}"
-                        Style="{StaticResource EditableFieldStyle}">
+                        SelectedValue="{Binding Categorie, Mode=TwoWay}"
+                        SelectedValuePath="Content"
+                        Style="{StaticResource EditableComboBoxStyle}">
                         <ComboBoxItem>Médical</ComboBoxItem>
                         <ComboBoxItem>Hospitalisation</ComboBoxItem>
                         <ComboBoxItem>Pharmacie</ComboBoxItem>
                         <ComboBoxItem>Dentaire</ComboBoxItem>
                     </ComboBox>
 
-                    <!--  Ligne 4  -->
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        Style="{StaticResource TableHeaderStyle}"
-                        Text="Agent responsable:" />
+                    <!-- Agent responsable -->
                     <ComboBox
                         Grid.Row="3"
                         Grid.Column="1"
-                        SelectedItem="{Binding AgentResponsable, Mode=TwoWay}"
-                        Style="{StaticResource EditableFieldStyle}">
+                        SelectedValue="{Binding AgentResponsable, Mode=TwoWay}"
+                        SelectedValuePath="Content"
+                        Style="{StaticResource EditableComboBoxStyle}">
                         <ComboBoxItem>Agent Dupont</ComboBoxItem>
                         <ComboBoxItem>Agent Martin</ComboBoxItem>
                         <ComboBoxItem>Agent Lambert</ComboBoxItem>
                     </ComboBox>
 
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="2"
-                        Style="{StaticResource TableHeaderStyle}"
-                        Text="Date dernière modification:" />
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="3"
-                        Style="{StaticResource TableCellStyle}"
-                        Text="{Binding DateDerniereModification, StringFormat='dd/MM/yyyy HH:mm'}" />
-
-                    <!--  Ligne 5  -->
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Style="{StaticResource TableHeaderStyle}"
-                        Text="Montant remboursé:" />
+                    <!-- Ligne 5 - TextBox avec le bon style -->
                     <TextBox
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Style="{StaticResource EditableFieldStyle}"
-                        Text="{Binding MontantRembourse, Mode=TwoWay, StringFormat={}{0:C}}" />
+    Grid.Row="4"
+    Grid.Column="1"
+    Style="{StaticResource EditableTextBoxStyle}"
+    Text="{Binding MontantRembourse, Mode=TwoWay, StringFormat={}{0:C}}" />
 
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="2"
-                        Style="{StaticResource TableHeaderStyle}"
-                        Text="Pourcentage remboursement:" />
                     <TextBox
-                        Grid.Row="4"
-                        Grid.Column="3"
-                        Style="{StaticResource EditableFieldStyle}"
-                        Text="{Binding PourcentageRemboursement, Mode=TwoWay}" />
+    Grid.Row="4"
+    Grid.Column="3"
+    Style="{StaticResource EditableTextBoxStyle}"
+    Text="{Binding PourcentageRemboursement, Mode=TwoWay}" />
 
-                    <!--  Ligne 6 - Commentaires (sur toute la largeur)  -->
-                    <TextBlock
-                        Grid.Row="5"
-                        Grid.Column="0"
-                        Style="{StaticResource TableHeaderStyle}"
-                        Text="Commentaires:" />
+                    <!-- Ligne 6 - TextBox avec le bon style -->
                     <TextBox
-                        Grid.Row="5"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="3"
-                        MinHeight="80"
-                        AcceptsReturn="True"
-                        Style="{StaticResource EditableFieldStyle}"
-                        Text="{Binding Commentaires, Mode=TwoWay}"
-                        VerticalScrollBarVisibility="Auto" />
+    Grid.Row="5"
+    Grid.Column="1"
+    Grid.ColumnSpan="3"
+    MinHeight="80"
+    AcceptsReturn="True"
+    Style="{StaticResource EditableTextBoxStyle}"
+    Text="{Binding Commentaires, Mode=TwoWay}"
+    VerticalScrollBarVisibility="Auto" />
 
-                    <!--  Ligne 7 - Documents (sur toute la largeur)  -->
-                    <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="0"
-                        Style="{StaticResource TableHeaderStyle}"
-                        Text="Documents associés:" />
+                    <!-- Ligne 7 - ListBox avec le bon style -->
                     <ListBox
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="3"
-                        MinHeight="60"
-                        BorderThickness="0"
-                        ItemsSource="{Binding Documents}"
-                        Style="{StaticResource EditableFieldStyle}">
+    Grid.Row="6"
+    Grid.Column="1"
+    Grid.ColumnSpan="3"
+    MinHeight="60"
+    BorderThickness="0"
+    ItemsSource="{Binding Documents}"
+    Style="{StaticResource EditableListBoxStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="2" Text="{Binding NomFichier}" />

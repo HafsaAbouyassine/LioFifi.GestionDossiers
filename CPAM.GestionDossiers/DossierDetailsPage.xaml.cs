@@ -30,17 +30,18 @@ namespace CPAM.GestionDossiers
                 DateDerniereModification = dossier.DateDerniereModification,
                 MontantRembourse = dossier.MontantRembourse,
                 PourcentageRemboursement = dossier.PourcentageRemboursement,
-                Commentaires = dossier.Commentaires,
+                Commentaires = dossier.Commentaires
             };
 
             DataContext = CurrentDossier;
-            _context = new AppDbContext(); // Ou injection de dépendance
+            _context = new AppDbContext();
         }
 
         private void BtnEnregistrer_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+
                 // Validation
                 if (string.IsNullOrWhiteSpace(CurrentDossier.Statut))
                 {

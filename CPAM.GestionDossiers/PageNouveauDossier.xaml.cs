@@ -48,7 +48,8 @@ namespace CPAM.GestionDossiers
                 Statut = (status.SelectedItem as ComboBoxItem)?.Content?.ToString(),
                 Categorie = (category.SelectedItem as ComboBoxItem)?.Content?.ToString(),
                 AgentResponsable = (agentResponsable.SelectedItem as ComboBoxItem)?.Content?.ToString(),
-                DateDerniereModification = DateTime.Now
+                DateDerniereModification = DateTime.Now,
+                Commentaires = ""
             };
 
             _context.Dossiers.Add(dossier);

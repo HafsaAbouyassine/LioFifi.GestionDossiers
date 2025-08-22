@@ -40,10 +40,13 @@ namespace CPAM.GestionDossiers
             {
                 DossierSelectionne = dossier;
                 DialogResult = true;
-                MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
-                mainWindow.MainContentFrame.Navigate(new DossierDetailsPage(dossier));
-            }
 
+                // Fermez d'abord cette fenêtre
+                Close();
+                var detailsWindow = new DossierDetailsPage(dossier);
+                detailsWindow.ShowDialog();
+
+            }
         }
 
         private void BtnFermer_Click(object sender, RoutedEventArgs e)

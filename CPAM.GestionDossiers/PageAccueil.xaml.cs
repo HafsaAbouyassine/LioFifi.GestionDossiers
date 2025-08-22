@@ -1,7 +1,9 @@
 ﻿using CPAM.GestionDossiers.Data;
+using CPAM.GestionDossiers.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 
@@ -22,6 +24,8 @@ namespace CPAM.GestionDossiers
                 .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CPAMDB;Trusted_Connection=True;")
                 .Options;
             _context = new AppDbContext(options);
+
+
             chargerStatistiques();
         }
 
@@ -72,6 +76,33 @@ namespace CPAM.GestionDossiers
             var rechercheWindow = new RechercherDossierWindow(_context);
             rechercheWindow.Owner = Window.GetWindow(this);
             rechercheWindow.ShowDialog();
+        }
+
+        public void ImprimerDossier(Dossier dossier)
+        {
+            // Création du FlowDocument en mémoire
+            FlowDocument doc = new FlowDocument();
+
+            // Ajout de titres et paragraphes
+            doc.Blocks.Add(new Paragraph(new Run("FICHE DOSSIER")));
+            doc.Blocks.Add(new Paragraph(new Run($"N° Identité : {dossier.NumeroIdentite}")));
+            doc.Blocks.Add(new Paragraph(new Run($"Nom assuré : {dossier.NomAssure}")));
+            doc.Blocks.Add(new Paragraph(new Run($"Statut : {dossier.Statut}")));
+            doc.Blocks.Add(new Paragraph(new Run($"Catégorie : {dossier.Categorie}")));
+            doc.Blocks.Add(new Paragraph(new Run($"Agent responsable : {dossier.AgentResponsable}")));
+            doc.Blocks.Add(new Paragraph(new Run($"Montant : {dossier.MontantRembourse:C}")));
+            doc.Blocks.Add(new Paragraph(new Run($"Commentaires : {dossier.Commentaires}")));
+
+            // Boîte de dialogue d’impression Windows
+            PrintDialog printDialog = new PrintDialog();
+
+            if (printDialog.ShowDialog() == true)
+            {
+                IDocumentPaginatorSource idpSource = doc;
+                printDialog.PrintDocument(idpSource.DocumentPaginator, "Impression du dossier");
+            }
+
+
         }
     }
 }
