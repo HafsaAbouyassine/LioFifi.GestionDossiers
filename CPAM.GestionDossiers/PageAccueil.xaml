@@ -88,7 +88,7 @@
                             HorizontalAlignment="Center"
                             FontSize="16"
                             Foreground="#FFA7C4FF"
-                            Text="Gestion des dossiers CPAM" />
+                            Text="Gestion des dossiers Assurance LioFifi" />
                     </StackPanel>
                 </Border>
 
@@ -190,10 +190,12 @@
                     <Button
                         Margin="5"
                         Content="Imprimer"
+                        Click="Imprimer_click"
                         Style="{StaticResource QuickActionButton}"
                         Tag="🖨️" />
                     <Button
                         Content="Exporter"
+                        Click="BtnExporter_Click"
                         Style="{StaticResource QuickActionButton}"
                         Tag="📤" />
                 </WrapPanel>

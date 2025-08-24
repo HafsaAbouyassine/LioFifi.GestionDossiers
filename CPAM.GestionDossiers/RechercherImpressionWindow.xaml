@@ -1,0 +1,170 @@
+﻿<Window x:Class="CPAM.GestionDossiers.RechercherImpressionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Impression de dossier"
+        Height="600" Width="500" 
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#FFF5F9FF">
+
+    <Window.Resources>
+        <DropShadowEffect x:Key="ShadowEffect" BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF1E3A5F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowEffect}"/>
+        </Style>
+
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+            <Setter Property="Background" Value="#FF5F7A9F"/>
+        </Style>
+
+        <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#FFA7C4FF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#FF2F4F4F"/>
+        </Style>
+
+        <Style x:Key="ResultCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowEffect}"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- En-tête -->
+        <Border Grid.Row="0" Background="#FF1E3A5F" CornerRadius="8" Padding="15" Effect="{StaticResource ShadowEffect}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="🖨️" FontSize="24" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <TextBlock Text="IMPRESSION DE DOSSIER" 
+                           Foreground="White" 
+                           FontSize="18" 
+                           FontWeight="Bold"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Zone de recherche -->
+        <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="15" Margin="0,15,0,10" Effect="{StaticResource ShadowEffect}">
+            <StackPanel>
+                <TextBlock Text="Nom de l'assuré ou Numéro de dossier à imprimer :" 
+                           Foreground="#FF1E3A5F" 
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,10"/>
+
+                <TextBox x:Name="txtRecherche" 
+                         Style="{StaticResource SearchTextBoxStyle}"
+                         TextChanged="TxtRecherche_TextChanged">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding SearchCommand}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+
+                <Button x:Name="btnRechercher" 
+                        Content="Rechercher"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Margin="0,10,0,0"
+                        Click="BtnRechercher_Click"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Résultats -->
+        <Border x:Name="resultCard" 
+                Grid.Row="2" 
+                Style="{StaticResource ResultCardStyle}"
+                Visibility="Collapsed">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Icône -->
+                <Border Grid.Column="0" 
+                        Width="40" 
+                        Height="40" 
+                        Background="#FFE6F0FF" 
+                        CornerRadius="20"
+                        Margin="0,0,15,0">
+                    <TextBlock Text="📋" 
+                               FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+
+                <!-- Détails -->
+                <StackPanel Grid.Column="1">
+                    <TextBlock x:Name="txtNumeroDossier" 
+                               Foreground="#FF1E3A5F"
+                               FontWeight="Bold"
+                               FontSize="16"/>
+
+                    <TextBlock x:Name="txtNomAssure" 
+                               Foreground="#FF2F4F4F"
+                               Margin="0,2,0,0"/>
+
+                    <WrapPanel Margin="0,5,0,0">
+                        <Border x:Name="badgeStatut"
+                                Background="#FFE6F0FF"
+                                CornerRadius="3"
+                                Padding="5,2"
+                                Margin="0,0,5,0">
+                            <TextBlock x:Name="txtStatut"
+                                       Foreground="#FF1E3A5F"
+                                       FontSize="12"/>
+                        </Border>
+
+                        <TextBlock x:Name="txtDateCreation"
+                                   Foreground="#FF7F9FBF"
+                                   FontSize="12"/>
+                    </WrapPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Bouton d'impression -->
+        <Border Grid.Row="3" 
+                Background="White" 
+                CornerRadius="8" 
+                Padding="10" 
+                Margin="0,40,0,0"
+                Effect="{StaticResource ShadowEffect}" Height="102" VerticalAlignment="Top">
+            <Button x:Name="btnImprimer" 
+                    Content="Imprimer le dossier"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Height="40"
+                    Visibility="Collapsed"
+                    Click="BtnImprimer_Click"/>
+        </Border>
+
+        <!-- Bouton fermer -->
+        <StackPanel Grid.Row="4" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Margin="0,15,0,0">
+            <Button Content="Fermer" 
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Background="#FF7F9FBF"
+                    Click="BtnFermer_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

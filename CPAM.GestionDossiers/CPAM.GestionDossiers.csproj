@@ -9,10 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icons\BanniereGestionDeDossiers.png" />
     <None Remove="Icons\chart.png" />
     <None Remove="Icons\folder.png" />
     <None Remove="Icons\home.png" />
     <None Remove="Icons\logout.png" />
+    <None Remove="Icons\printer.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,13 +26,18 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="PDFsharp" Version="6.2.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Icons\BanniereGestionDeDossiers.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Icons\chart.png" />
     <Resource Include="Icons\folder.png" />
     <Resource Include="Icons\home.png" />
     <Resource Include="Icons\logout.png" />
+    <Resource Include="Icons\printer.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -28,7 +28,7 @@
                     FontSize="20"
                     FontWeight="Bold"
                     Foreground="White"
-                    Text="CPAM" />
+                    Text="Assurance LioFifi" />
 
                 <!--  Boutons menu avec icônes  -->
                 <Button
