@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:CPAM.GestionDossiers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="LioFifi - Gestion Dossiers"
+    Icon="/Icons/LioFifi Brand.ico"
     Width="1500"
     Height="900"
     mc:Ignorable="d">

@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Icons\LioFifi Brand.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +14,7 @@
     <None Remove="Icons\chart.png" />
     <None Remove="Icons\folder.png" />
     <None Remove="Icons\home.png" />
+    <None Remove="Icons\LioFifi Brand.ico" />
     <None Remove="Icons\logout.png" />
     <None Remove="Icons\printer.png" />
   </ItemGroup>
@@ -27,6 +29,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="PDFsharp" Version="6.2.1" />
+    <PackageReference Include="XAct.Deployment.ClickOnce" Version="0.0.5014" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,7 +39,10 @@
     <Resource Include="Icons\chart.png" />
     <Resource Include="Icons\folder.png" />
     <Resource Include="Icons\home.png" />
-    <Resource Include="Icons\logout.png" />
+    <Resource Include="Icons\LioFifi Brand.ico" />
+    <Resource Include="Icons\logout.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Icons\printer.png" />
   </ItemGroup>
 
