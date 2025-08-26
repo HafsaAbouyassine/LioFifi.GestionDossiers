@@ -135,9 +135,6 @@ namespace CPAM.GestionDossiers
 
         }
 
-        private void DgDossiers_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Gestion de la sélection si nécessaire
-        }
+        
     }
 }
