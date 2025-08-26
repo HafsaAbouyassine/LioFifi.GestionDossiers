@@ -15,7 +15,7 @@ namespace CPAM.GestionDossiers
         {
             InitializeComponent();
 
-            // Créer une copie du dossier pour l'édition
+            // Création d'une copie du dossier pour l'édition
             _originalDossier = dossier;
             CurrentDossier = new Dossier
             {
@@ -49,10 +49,10 @@ namespace CPAM.GestionDossiers
                     return;
                 }
 
-                // Mettre à jour la date de modification
+                // Mise à jour de la date de modification
                 CurrentDossier.DateDerniereModification = DateTime.Now;
 
-                // Copier les modifications vers l'original
+                // Copie des modifications vers l'original
                 _originalDossier.Statut = CurrentDossier.Statut;
                 _originalDossier.Categorie = CurrentDossier.Categorie;
                 _originalDossier.AgentResponsable = CurrentDossier.AgentResponsable;
@@ -61,7 +61,7 @@ namespace CPAM.GestionDossiers
                 _originalDossier.Commentaires = CurrentDossier.Commentaires;
                 _originalDossier.DateDerniereModification = CurrentDossier.DateDerniereModification;
 
-                // Sauvegarder
+                // Sauvegarde
                 _context.Dossiers.Update(_originalDossier);
                 _context.SaveChanges();
 
