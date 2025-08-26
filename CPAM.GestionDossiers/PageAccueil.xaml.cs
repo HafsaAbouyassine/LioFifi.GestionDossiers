@@ -190,7 +190,7 @@ namespace CPAM.GestionDossiers
                     // Dialogue d'impression UNIQUEMENT pour choisir l'imprimante PDF
                     PrintDialog printDialog = new PrintDialog();
 
-                    // Configurez pour utiliser "Microsoft Print to PDF"
+                    // Configuration pour utiliser "Microsoft Print to PDF"
                     if (printDialog.ShowDialog() == true)
                     {
                         printDialog.PrintDocument(((IDocumentPaginatorSource)doc).DocumentPaginator,
@@ -323,7 +323,7 @@ namespace CPAM.GestionDossiers
 
             table.RowGroups.Add(rowGroup);
 
-            // 💡 Encapsulation dans un Paragraph pour centrer
+            // Encapsulation dans un Paragraph pour centrer
             var container = new Paragraph
             {
                 TextAlignment = TextAlignment.Center
@@ -390,7 +390,7 @@ namespace CPAM.GestionDossiers
                     Width = 600 // largeur fixe pour centrer
                 }));
 
-                return container; // ✅ retourne bien le tableau
+                return container; // pour retourne le tableau
             }
             else
             {
