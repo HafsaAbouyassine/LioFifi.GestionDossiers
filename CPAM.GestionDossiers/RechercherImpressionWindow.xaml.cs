@@ -128,11 +128,11 @@ namespace CPAM.GestionDossiers
                 // === BANNIÈRE EN-TÊTE ===
                 var image = new Image();
 
-                // Chargez l'image de la bannière
+                //l'image de la bannière
                 var uri = new Uri("Icons/BanniereGestionDeDossiers.png", UriKind.Relative);
                 image.Source = new BitmapImage(uri);
 
-                // Ajustez la taille pour l'impression
+                // la taille pour l'impression
                 image.Width = 1200; // Largeur de la zone imprimable moins les marges
                 image.Height = 100; // Hauteur fixe
                 image.Stretch = Stretch.Uniform; // Conserver les proportions
@@ -146,7 +146,6 @@ namespace CPAM.GestionDossiers
             }
             catch (Exception ex)
             {
-                // Si l'image n'est pas trouvée, ajoutez un en-tête textuel à la place
                 var headerParagraph = new Paragraph(new Run("LioFifi - GESTION DES DOSSIERS"))
                 {
                     FontSize = 18,
@@ -212,7 +211,7 @@ namespace CPAM.GestionDossiers
             table.RowGroups.Add(rowGroup);
             doc.Blocks.Add(table);
 
-            // Commentaires (si existants)
+            
             if (!string.IsNullOrEmpty(_dossierTrouve.Commentaires))
             {
                 doc.Blocks.Add(new Paragraph(new Run("Commentaires:"))
