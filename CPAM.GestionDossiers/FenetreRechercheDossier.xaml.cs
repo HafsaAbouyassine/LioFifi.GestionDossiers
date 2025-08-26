@@ -41,7 +41,7 @@ namespace CPAM.GestionDossiers
                 DossierSelectionne = dossier;
                 DialogResult = true;
 
-                // Fermez d'abord cette fenêtre
+                // Fermeture de cette fenêtre d'abord
                 Close();
                 var detailsWindow = new DossierDetailsPage(dossier);
                 detailsWindow.ShowDialog();
